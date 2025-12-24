@@ -176,14 +176,12 @@ List<double>? _parseColor(String? hex) {
 
 /// Escape string for PDF
 String _pdfString(String str) {
-  return '(' +
-      str
+  return '(${str
           .replaceAll('\\', '\\\\')
           .replaceAll('(', '\\(')
           .replaceAll(')', '\\)')
           .replaceAll('\r', '\\r')
-          .replaceAll('\n', '\\n') +
-      ')';
+          .replaceAll('\n', '\\n')})';
 }
 
 /// Serialize value to PDF format
@@ -209,7 +207,7 @@ String _serialize(dynamic val) {
     return _pdfString(val);
   }
   if (val is List) {
-    return '[' + val.map(_serialize).join(' ') + ']';
+    return '[${val.map(_serialize).join(' ')}]';
   }
   if (val is _Ref) {
     return '${val.id} 0 R';
@@ -218,7 +216,7 @@ String _serialize(dynamic val) {
     final pairs = val.entries
         .where((e) => e.value != null)
         .map((e) => '/${e.key} ${_serialize(e.value)}');
-    return '<<\n' + pairs.join('\n') + '\n>>';
+    return '<<\n${pairs.join('\n')}\n>>';
   }
   return val.toString();
 }
@@ -332,7 +330,7 @@ class PDFBuilder {
     String xref = 'xref\n0 ${_objects.length + 1}\n';
     xref += '0000000000 65535 f \n';
     for (int i = 1; i <= _objects.length; i++) {
-      xref += offsets[i].toString().padLeft(10, '0') + ' 00000 n \n';
+      xref += '${offsets[i].toString().padLeft(10, '0')} 00000 n \n';
     }
     parts.add(xref);
 

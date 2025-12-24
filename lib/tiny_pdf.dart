@@ -1,5 +1,5 @@
-// tinypdf — Minimal PDF creation library
-// <400 LOC, zero dependencies, makes real PDFs
+/// tinypdf — Minimal PDF creation library
+/// <400 LOC, zero dependencies, makes real PDFs
 
 import 'dart:typed_data';
 import 'dart:convert';
@@ -107,18 +107,25 @@ const List<int> _widths = [
 enum TextAlign { left, center, right }
 
 /// Options for rendering text
+/// Options for rendering text in [PageContext.text].
 class TextOptions {
   final TextAlign align;
   final double? width;
   final String? color;
 
+  /// Create text options.
   const TextOptions({this.align = TextAlign.left, this.width, this.color});
 }
 
-/// Context for drawing on a page
+/// Context for drawing on a PDF page.
 abstract class PageContext {
+  /// Draw text at (x, y) with given font size and options.
   void text(String str, double x, double y, double size, [TextOptions? opts]);
+
+  /// Draw a filled rectangle at (x, y) with width w and height h.
   void rect(double x, double y, double w, double h, String fill);
+
+  /// Draw a line from (x1, y1) to (x2, y2) with color and optional width.
   void line(
     double x1,
     double y1,
@@ -127,6 +134,8 @@ abstract class PageContext {
     String stroke, [
     double lineWidth = 1,
   ]);
+
+  /// Draw a JPEG image at (x, y) with width w and height h.
   void image(Uint8List jpegBytes, double x, double y, double w, double h);
 }
 
@@ -176,12 +185,7 @@ List<double>? _parseColor(String? hex) {
 
 /// Escape string for PDF
 String _pdfString(String str) {
-  return '(${str
-          .replaceAll('\\', '\\\\')
-          .replaceAll('(', '\\(')
-          .replaceAll(')', '\\)')
-          .replaceAll('\r', '\\r')
-          .replaceAll('\n', '\\n')})';
+  return '(${str.replaceAll('\\', '\\\\').replaceAll('(', '\\(').replaceAll(')', '\\)').replaceAll('\r', '\\r').replaceAll('\n', '\\n')})';
 }
 
 /// Serialize value to PDF format
@@ -222,6 +226,7 @@ String _serialize(dynamic val) {
 }
 
 /// PDF Builder interface
+/// PDF document builder. Use [pdf] to create an instance.
 class PDFBuilder {
   final List<_PDFObject> _objects = [];
   final List<_Ref> _pages = [];
@@ -335,7 +340,10 @@ class PDFBuilder {
     parts.add(xref);
 
     parts.add(
-      'trailer\n${_serialize({'Size': _objects.length + 1, 'Root': catalogRef})}\n',
+      'trailer\n${_serialize({
+            'Size': _objects.length + 1,
+            'Root': catalogRef
+          })}\n',
     );
     parts.add('startxref\n$xrefOffset\n%%EOF\n');
 
@@ -481,6 +489,7 @@ class _PageContextImpl implements PageContext {
 }
 
 /// Create a new PDF document
+/// Create a new PDF document builder.
 PDFBuilder pdf() {
   return PDFBuilder();
 }

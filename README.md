@@ -2,6 +2,8 @@
 
 Tiny, zero-dependency PDF builder for Dart. Write PDF primitives (text, rects, lines, JPEG images) and render markdown into real PDFs.
 
+[Click here](https://dev.to/rizmyabdulla/tinypdf-a-tiny-pdf-library-in-dart-600-loc-zero-deps-real-pdfs-1do9) to read the dev.to post.
+
 ## Install
 
 ```bash

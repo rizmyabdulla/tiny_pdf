@@ -4,7 +4,7 @@ version: 0.0.1
 homepage: https://github.com/rizmyabdulla/tiny_pdf
 
 environment:
-  sdk: ^3.10.4
+  sdk: '>=3.0.0 <4.0.0'
 
 dev_dependencies:
   test: ^1.24.0
